@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT-2 Text Generation</title>
+    <style>
+        body {
+            background-color: #f0f0f0; /* Simple background color */
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        input[type="number"] {
+            width: 35px; /* Adjust the width to fit 3 digits */
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #ffffff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        #response {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>GPT-2 Text Generation</h1>
+        <label for="prompt">Enter your text prompt:</label>
+        <input type="text" id="prompt" placeholder="Type your prompt here">
+        <label for="min_word_count">Minimum Word Count:</label>
+        <input type="number" id="min_word_count" placeholder="e.g., 150" min="1">
+        <button onclick="generateText()">Generate</button>
+        <div id="response"></div>
+    </div>
+
+    <script>
+        function generateText() {
+            var prompt = document.getElementById("prompt").value;
+            var minWordCount = document.getElementById("min_word_count").value;
+
+            fetch("/generate", {
+                method: "POST",
+                body: JSON.stringify({ prompt: prompt, min_word_count: minWordCount }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                var responseDiv = document.getElementById("response");
+                responseDiv.innerHTML = data;
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
